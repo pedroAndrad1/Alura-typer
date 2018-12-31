@@ -23,7 +23,7 @@
          </li>
        </ul>
 
-       <textarea class="campo-digitacao" rows="10" cols="40"> </textarea>
+       <textarea class="campo-digitacao" rows="10" cols="40"></textarea>
        <a id="botao-reiniciar" class="btn-floating btn-large waves-effect waves-light red">
            <i class="material-icons">restore</i>
        </a>
@@ -32,6 +32,32 @@
          <li><span id="contador-palavras"> 0 </span> palavras </li>
        </ul>
     </div>
+
+    <section class="placar">
+        <h3 class="center">Placar</h3>
+            <table class="centered bordered">
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>No. de palavras</th>
+                        <th>
+                          Remover
+                        </th>
+                    </tr>
+                </thead>
+            <tbody>
+                <tr>
+                    <td>Usuario Exemplo</td>
+                    <td>99</td>
+                    <td>
+                      <a href="#">
+                        <i class="small material-icons">delete</i>
+                      </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
   <!-- O jquery tem que ser importado antes do JavaScript pois será usado neste -->
   <script src="js/jquery.js"></script>

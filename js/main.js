@@ -49,16 +49,20 @@ function inicializaCronometro(){
                 $("#tempo-digitacao").text(tempoRestante);
 
                 if(tempoRestante == 0){
-                    campo.attr("disabled", true);
-                    $("#botao-reiniciar").attr("disabled", false);
                     clearInterval(setIntervalID);
-                    campo.toggleClass("campo-desativado");
+                    finalizaJogo();
                 }
             }, 1000);
     });
 
 }
 
+function finalizaJogo() {
+    campo.attr("disabled", true);
+    $("#botao-reiniciar").attr("disabled", false);
+    campo.toggleClass("campo-desativado");
+    inserePlacar();
+}
 function reiniciaJogo() {
     campo.attr("disabled",false);
     $("#contador-caracteres").text("0");
@@ -77,7 +81,17 @@ function inicializaMarcadores() {
       campo.on("input",function(){
 
           var digitado = campo.val();
-          var comparavel = frase.substr(0,digitado.length);
+
+          if(frase.startsWith(digitado)){
+            campo.addClass("borda-verde");
+            campo.removeClass("borda-vermelha");
+          }else{
+            campo.addClass("borda-vermelha");
+            campo.removeClass("borda-verde");
+          }
+
+      /*
+         var comparavel = frase.substr(0,digitado.length);
 
           console.log(digitado);
           console.log(comparavel);
@@ -88,7 +102,42 @@ function inicializaMarcadores() {
               campo.addClass("borda-vermelha");
               campo.removeClass("borda-verde");
           }
+      */
 
       });
 
+}
+
+function inserePlacar() {
+    var corpoTabela = $(".placar").find("tbody");
+    var usuario = "Pedro";
+    var numPalavras = $("#contador-palavras").text();
+    var linha = novaLinha(usuario, numPalavras);
+
+    linha.find("botao-remover").click(removeLinha);
+    corpoTabela.prepend(linha);
+}
+
+function novaLinha(usuario, palavras){
+    var linha = $("<tr>");
+    var colunaUsuario = $("<td>").text(usuario);
+    var colunaPalavras = $("<td>").text(palavras);
+    var colunaRemover = $("<td>");
+
+    var botao = $("<a>").attr("href,#").addClass("botao-remover");
+    var icone = $("<i>").addClass("small").addClass("material-icons").text("delete");
+    botao.append(icone);
+    colunaRemover.append(botao);
+
+
+    linha.append(colunaUsuario);
+    linha.append(colunaPalavras);
+    link.append(colunaRemover);
+
+    return linha;
+}
+
+function removeLinha(event) {
+    event.preventDefault();
+    $(this).parente().parent().remove();
 }
