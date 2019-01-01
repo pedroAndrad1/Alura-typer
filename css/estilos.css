@@ -24,9 +24,17 @@
     border: 3px solid red;
 }
 
-/* Solução, PARA ESTE CASO, para desabilitar a tag <a> que contém o botão de
-reiniciar*/
+/* Solução, PARA ESTE CASO, para desabilitar a tag <a>, durante o jogo,
+que contém o botão de reiniciar*/
 
 a[disabled="disabled"] {
     pointer-events: none;
+}
+
+.placar{
+  display: none;
+}
+
+.body{
+  overflow: scroll;
 }

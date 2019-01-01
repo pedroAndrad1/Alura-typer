@@ -64,15 +64,22 @@ function finalizaJogo() {
     inserePlacar();
 }
 function reiniciaJogo() {
-    campo.attr("disabled",false);
-    $("#contador-caracteres").text("0");
-    $("#contador-palavras").text("0");
-    $("#tempo-digitacao").text(tempoInicial);
-    campo.val(""); //Como é um input, é usado o val() em vez do text() para auterar o conteúdo.
-    inicializaCronometro();
-    campo.toggleClass("campo-desativado");
-    campo.removeClass("borda-vermelha");
-    campo.removeClass("borda-verde");
+    /*Coloquei esse if para impedir que o clique do botao-reiniciar execute
+    alguma ação fora da situação em que o jogo estivesse finalizado, causando
+    bugs. Porém, o botão ainda é clicável fora dessa situação. O ideal seria ele
+    estar em um estado de disabled e apenas ser clicável numa situação de jogo
+    finalizado. */
+    if(campo.hasClass("campo-desativado")){
+        campo.attr("disabled",false);
+        $("#contador-caracteres").text("0");
+        $("#contador-palavras").text("0");
+        $("#tempo-digitacao").text(tempoInicial);
+        campo.val(""); //Como é um input, é usado o val() em vez do text() para auterar o conteúdo.
+        inicializaCronometro();
+        campo.toggleClass("campo-desativado");
+        campo.removeClass("borda-vermelha");
+        campo.removeClass("borda-verde");
+    }
 }
 
 function inicializaMarcadores() {
@@ -106,38 +113,4 @@ function inicializaMarcadores() {
 
       });
 
-}
-
-function inserePlacar() {
-    var corpoTabela = $(".placar").find("tbody");
-    var usuario = "Pedro";
-    var numPalavras = $("#contador-palavras").text();
-    var linha = novaLinha(usuario, numPalavras);
-
-    linha.find(".botao-remover").click(removeLinha);
-    corpoTabela.prepend(linha);
-}
-
-function novaLinha(usuario, palavras){
-    var linha = $("<tr>");
-    var colunaUsuario = $("<td>").text(usuario);
-    var colunaPalavras = $("<td>").text(palavras);
-    var colunaRemover = $("<td>");
-
-    var link = $("<a>").attr("href","#").addClass("botao-remover");
-    var icone = $("<i>").addClass("small").addClass("material-icons").text("delete");
-    link.append(icone);
-    colunaRemover.append(link);
-
-
-    linha.append(colunaUsuario);
-    linha.append(colunaPalavras);
-    linha.append(colunaRemover);
-
-    return linha;
-}
-
-function removeLinha(event) {
-    event.preventDefault();
-    $(this).parent().parent().remove();
 }
