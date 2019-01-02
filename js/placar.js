@@ -1,8 +1,5 @@
-
-$(function () {
-  $("#botao-placar").stop().click(mostrarPlacar);
-})
-
+$("#botao-placar").stop().click(mostrarPlacar);
+$("#botao-sync").click(sincronizaPlacar);
 
 function inserePlacar() {
     var corpoTabela = $(".placar").find("tbody");
@@ -19,11 +16,10 @@ function inserePlacar() {
 
 function scrollPlacar() {
     var posicaoPlacar = $(".placar").offset().top;
-    console.log(posicaoPlacar);
     /*No exerc´cio, manda selecionar o body para realizar a animação, mas não
     estava funicionando. Li no fórum que o funcionou para alguns selecionando
     o html e  funcionaou para mim também
-    link: https://cursos.alura.com.br/forum/topico-scroll-sem-funcionar-74820*/ 
+    link: https://cursos.alura.com.br/forum/topico-scroll-sem-funcionar-74820*/
     $("html").animate(
     {
     scrollTop: posicaoPlacar//+px, deixei isto comentado pois funciona sem o +px,
@@ -62,4 +58,40 @@ function removeLinha(event) {
 function mostrarPlacar() {
     $(".placar").slideToggle(600);
     scrollPlacar();
+}
+
+function sincronizaPlacar() {
+      var linhas = $("tbody>tr");//Pega todas as tr's filhas diretas do tbody.
+      var placar = [];
+
+      linhas.each(function() {
+        var usuario = $(this).find("td:nth-child(1)").text();
+        var palavras = $(this).find("td:nth-child(2)").text();
+
+        var score = {
+            usuario: usuario,
+            pontos: palavras
+        };
+
+        placar.push(score);
+      });
+
+      var dados = {
+          placar: placar
+      };
+      $.post("http://localhost:3000/placar",dados,function() {
+          console.log("Foi enviado para o servidor");
+      });
+}
+
+function atualizarPlacar() {
+      $.get("http://localhost:3000/placar",function(data) {
+            $(data).each(function(){
+                var linha = novaLinha(this.usuario,this.pontos);
+
+                linha.find(".botao-remover").click(removeLinha);
+
+                $("tbody").append(linha);
+            });
+      });
 }

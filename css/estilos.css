@@ -38,3 +38,20 @@ a[disabled="disabled"] {
 .body{
   overflow: scroll;
 }
+
+#erro{
+  color: red;
+  display: none;
+}
+
+#spinner{
+  display: none;
+}
+
+#frase-id{
+    width: 40px;
+
+}
+#botao-sync{
+  float: right;
+}
